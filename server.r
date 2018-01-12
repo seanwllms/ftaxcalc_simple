@@ -29,10 +29,9 @@ function(input, output) {
       select(-scenario) %>% 
       t() 
     
-    names(data) <- c("Pre-TCJA (TY 2017)")
-               #, "Post-TCJA (TY 2018)")
     
-    data_base
+    
+    #data_base
     
     tot_item_alt <- input$med + input$intpd + min(10000,input$txpaid) + input$char 
     
@@ -43,7 +42,25 @@ function(input, output) {
     
     taxable_income_alt <- input$agi - max(st_ded_alt, tot_item_alt) - exemptions_alt
     
-    tax_alt <- 0 #calculate_tax(input$status, taxable_income_base, "Alt")
+    tax_alt <- calculate_tax(input$status, taxable_income_alt, "Alt")
+    
+    data_alt <- as_tibble(list(
+      scenario = "Alt",
+      AGI = input$agi,
+      `Capital Gains` = input$capgains,
+      `Itemized Deductions` = tot_item_alt,
+      `Standard Deduction` = st_ded_alt,
+      `Exemptions` = exemptions_alt,
+      `Federal Taxable Income` = taxable_income_alt,
+      Tax = tax_alt
+    )) %>% 
+      select(-scenario) %>% 
+      t() 
+    
+    output <- cbind(data_base, data_alt) 
+      
+    
+    output
     
   }))
   
