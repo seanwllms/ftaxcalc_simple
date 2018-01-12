@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1515540504352.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "3B06764E",
+    "lastKnownWriteTime" : 1515792362,
+    "last_content_update" : 1515792365175,
+    "path" : "I:/User/Williams/Data/ftaxcalc/global.r",
+    "project_path" : "global.r",
+    "properties" : {
+        "cursorPosition" : "41,5",
+        "scrollLine" : "7",
+        "source_window_id" : "",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
