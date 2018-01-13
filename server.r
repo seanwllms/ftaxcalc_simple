@@ -1,9 +1,7 @@
 
 function(input, output) {
   
-  # Filter data based on selections
-  output$table <- DT::renderDataTable(DT::datatable({
-  
+  output$taxtable <- renderTable({
     tot_item_base <- input$med + input$intpd + input$txpaid + input$char + 
       input$jobmisc + input$othermisc + input$caustheft
     
@@ -27,12 +25,10 @@ function(input, output) {
       Tax = tax_base
     )) %>% 
       select(-scenario) %>% 
-      t() 
+      gather(Item, `Pre TCJA (TY 2017)`, AGI:Tax)
     
     
-    
-    #data_base
-    
+    #data_alt
     tot_item_alt <- input$med + input$intpd + min(10000,input$txpaid) + input$char 
     
     st_ded_alt <- filter(stded, status ==input$status, basealt == "Alt") %>% 
@@ -55,13 +51,12 @@ function(input, output) {
       Tax = tax_alt
     )) %>% 
       select(-scenario) %>% 
-      t() 
+      gather(Item, `Post TCJA (TY 2018)`, AGI:Tax)
     
-    output <- cbind(data_base, data_alt) 
-      
+    output <- left_join(data_base, data_alt) 
+    
     
     output
-    
-  }))
+  })
   
 }
