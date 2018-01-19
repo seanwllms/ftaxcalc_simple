@@ -9,7 +9,7 @@ pageWithSidebar(
                                                        "Married Filing Separately")),
     numericInput('dependents', "# of Dependents", 0, min=0),
     numericInput('agi', 'Adjusted Gross Income', 63217),
-    numericInput('capgains', 'Capital Gains', 0),
+    numericInput('capgains', 'Long Term Dividends/Capital Gains', 0),
     h3("Itemized Deductions"),
     p("1040 Schedule A line in parentheses"),
     numericInput('med', 'Medical and Dental Expenses (4)', 0, min = 0),

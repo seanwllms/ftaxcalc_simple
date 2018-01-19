@@ -1,0 +1,41 @@
+scenario,status,bracket,br_bot,br_top,capgains
+Base,Single,1,0,9325,0
+Base,Single,2,9325,37950,0
+Base,Single,3,37950,91900,0.15
+Base,Single,4,91900,191650,0.15
+Base,Single,5,191650,416700,0.15
+Base,Single,6,416700,418400,0.15
+Base,Single,7,418400,1.00E+13,0.2
+Base,Married Filing Jointly,1,0,18650,0
+Base,Married Filing Jointly,2,18650,75900,0
+Base,Married Filing Jointly,3,75900,153100,0.15
+Base,Married Filing Jointly,4,151300,233350,0.15
+Base,Married Filing Jointly,5,233350,416700,0.15
+Base,Married Filing Jointly,6,416700,470700,0.15
+Base,Married Filing Jointly,7,470700,1.00E+13,0.2
+Base,Head of Household,1,0,13350,0
+Base,Head of Household,2,13350,50800,0
+Base,Head of Household,3,50800,131200,0.15
+Base,Head of Household,4,131200,212500,0.15
+Base,Head of Household,5,212500,416700,0.15
+Base,Head of Household,6,416700,444550,0.15
+Base,Head of Household,7,444550,1.00E+13,0.2
+Base,Married Filing Separately,1,0,9325,0
+Base,Married Filing Separately,2,9325,37950,0
+Base,Married Filing Separately,3,37950,76550,0.15
+Base,Married Filing Separately,4,76550,116675,0.15
+Base,Married Filing Separately,5,116675,208350,0.15
+Base,Married Filing Separately,6,208350,235350,0.15
+Base,Married Filing Separately,7,235350,1.00E+13,0.2
+Alt,Single,1,0,38600,0
+Alt,Single,2,38600,425800,0.15
+Alt,Single,3,425800,1.00E+13,0.2
+Alt,Married Filing Jointly,1,0,77200,0
+Alt,Married Filing Jointly,2,77200,479000,0.15
+Alt,Married Filing Jointly,3,479000,1.00E+13,0.2
+Alt,Head of Household,1,0,51700,0
+Alt,Head of Household,2,51700,452400,0.15
+Alt,Head of Household,3,452400,1.00E+13,0.2
+Alt,Married Filing Separately,1,0,38600,0
+Alt,Married Filing Separately,2,38600,239500,0.15
+Alt,Married Filing Separately,3,239500,1.00E+13,0.2

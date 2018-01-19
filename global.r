@@ -50,3 +50,16 @@ calculate_tax <- function(filingstatus, fti, scen) {
   tax
 }
 
+#read in capital gains brackets
+capgains <- read_csv("capgains.csv")
+
+#function to calculate tax from taxable income
+capgains_rate <- function(filingstatus, fti, scen) {
+  
+  value <- filter(capgains, br_bot < fti & br_top > fti) %>% 
+    filter(status == filingstatus & scenario == scen) %>% 
+    pull(capgains)
+  
+  value
+  
+}
