@@ -21,7 +21,7 @@ pageWithSidebar(
     numericInput('othermisc', 'Other Misc Deductions (28)', 0, min = 0)
   ),
   mainPanel(
-    DT::dataTableOutput("table")
+    tableOutput("taxtable")
   )
 )
 

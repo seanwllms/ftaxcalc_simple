@@ -1,6 +1,7 @@
 library(shiny)
 library(tidyverse)
 
+#read in standard deduction info
 stded <- as_tibble(list(
   status = rep(c("Married Filing Jointly","Single","Head of Household","Married Filing Separately"), 2),
   basealt = c(rep("Base", 4), rep("Alt", 4)),
@@ -18,9 +19,16 @@ stded <- as_tibble(list(
   )
 ))
 
+#read in pease 
+pease_limits <- as_tibble(list(
+  status = c("Married Filing Jointly","Single","Head of Household","Married Filing Separately"),
+  limit = c(313800, 261500,287650,156900)
+))
+
+#read in bracket information
 brackets <- read_csv("brackets.csv")
 
-
+#function to calculate tax from taxable income
 calculate_tax <- function(filingstatus, fti, scen) {
   
   for (br in 1:7) {
