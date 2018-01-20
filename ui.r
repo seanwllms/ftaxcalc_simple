@@ -7,7 +7,8 @@ pageWithSidebar(
                                                        "Single",
                                                        "Head of Household",
                                                        "Married Filing Separately")),
-    numericInput('dependents', "# of Dependents", 0, min=0),
+    numericInput('dependents', "# of Dependents", 2, min=0),
+    numericInput('child', "Children 17 and Younger", 2, min=0),
     numericInput('agi', 'Adjusted Gross Income', 63217),
     numericInput('capgains', 'Long Term Dividends/Capital Gains', 0),
     h3("Itemized Deductions"),
@@ -22,6 +23,8 @@ pageWithSidebar(
   ),
   mainPanel(
     tableOutput("taxtable")
+    #plotOutput("taxgraph")
+    
   )
 )
 
