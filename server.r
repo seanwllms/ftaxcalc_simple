@@ -34,7 +34,8 @@ function(input, output) {
     
     child_credit_base <- max(0,input$child * 1000 - child_phaseout_base)
     
-    tax_post_cc_base <- round(capgains_tax_base + tax_base, 0)-child_credit_base
+    tax_post_cc_base <- max(0,
+                            round(capgains_tax_base + tax_base, 0)-child_credit_base)
     
     data_base <- as_tibble(list(
       scenario = "Base",
@@ -80,7 +81,8 @@ function(input, output) {
     
     child_credit_alt <- max(0,input$child * 2000 - child_phaseout_alt)
     
-    tax_post_cc_alt <- round(capgains_tax_alt + tax_alt, 0)-child_credit_alt
+    tax_post_cc_alt <- max(0,
+                           round(capgains_tax_alt + tax_alt, 0)-child_credit_alt)
     
     data_alt <- as_tibble(list(
       scenario = "Alt",
@@ -133,9 +135,9 @@ function(input, output) {
     oldtax <- scales::comma(calctax()[[2]])
     newtax <- scales::comma(calctax()[[3]])
     
-    text <- paste0("The filer's 2017 federal tax under old law would have been <b>$",
+    text <- paste0("After subtracting the child credit, the filer's 2017 federal tax under old law would have been <b>$",
                    oldtax,
-                   ".</b> The filer's 2018 federal tax under the TCJA will be <b>$", 
+                   ".</b> Under the Tax Cuts and Jobs Act in 2018, that will be <b>$", 
                    newtax, 
                    "</b>.")
     HTML(text)
