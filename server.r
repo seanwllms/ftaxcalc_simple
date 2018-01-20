@@ -58,7 +58,9 @@ function(input, output) {
       gather(Item, `Pre TCJA (TY 2017)`, AGI:`Tax After (Non-Refundable) Child Credit`)
     
     #data_alt
-    tot_item_alt <- input$med + input$intpd + min(10000,input$txpaid) + input$char 
+    salt_limit <- ifelse(input$status == "Married Filing Separately", 5000, 10000)
+    
+    tot_item_alt <- input$med + input$intpd + min(salt_limit,input$txpaid) + input$char 
     
     st_ded_alt <- filter(stded, status ==input$status, basealt == "Alt") %>% 
       pull(standard_deduction)

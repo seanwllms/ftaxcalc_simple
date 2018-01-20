@@ -22,6 +22,7 @@ pageWithSidebar(
     numericInput('othermisc', 'Other Misc Deductions (28)', 0, min = 0)
   ),
   mainPanel(
+    h3("Federal Taxes"),
     tableOutput("taxtable"),
     htmlOutput("summary")
     #plotOutput("taxgraph")
