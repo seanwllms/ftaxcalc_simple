@@ -22,7 +22,8 @@ pageWithSidebar(
     numericInput('othermisc', 'Other Misc Deductions (28)', 0, min = 0)
   ),
   mainPanel(
-    tableOutput("taxtable")
+    tableOutput("taxtable"),
+    htmlOutput("summary")
     #plotOutput("taxgraph")
     
   )

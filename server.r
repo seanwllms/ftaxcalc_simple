@@ -18,22 +18,23 @@ function(input, output) {
     
     exemptions_base <- 4050 * (ifelse(input$status == "Married Filing Jointly", 2, 1) + input$dependents)
     
-    taxable_income_base <- input$agi - max(st_ded_base, tot_item_base-pease_base) - exemptions_base - input$capgains
+    taxable_income_base <- max(0,
+                               input$agi - max(st_ded_base, tot_item_base-pease_base) - exemptions_base)  
     
-    capgains_tax_base <- input$capgains * capgains_rate(input$status, taxable_income_base,"Base")
-      #capgains_rate(input$status, taxable_income_base,"Base") * input$capgains
+    capgains_tax_base <- max(0,
+                             input$capgains * capgains_rate(input$status, taxable_income_base,"Base"))
     
-    tax_base <- calculate_tax(input$status, taxable_income_base, "Base")
+    tax_base <- max(0,
+                    calculate_tax(input$status, taxable_income_base-input$capgains, "Base"))
     
-    cc_phase_base <- filter(childcr, status==input$status, basealt == "Base") %>% 
+    cc_phase_floor_base <- filter(childcr, status==input$status, basealt == "Base") %>% 
       pull(ccred_phaseout)
     
-    child_phaseout_base <- (50 * max(0, ifelse(((input$AGI - cc_phase_base) %% 1000)>0,1,0) +
-                                            (input$AGI - cc_phase_base) %/% 1000
-                                     )
-                            )
+    child_phaseout_base <- ceiling((max(0,as.numeric(input$agi) - cc_phase_floor_base))/1000)*50
     
-    child_credit_base <- input$child * 1000 - child_phaseout_base
+    child_credit_base <- max(0,input$child * 1000 - child_phaseout_base)
+    
+    tax_post_cc_base <- round(capgains_tax_base + tax_base, 0)-child_credit_base
     
     data_base <- as_tibble(list(
       scenario = "Base",
@@ -46,13 +47,14 @@ function(input, output) {
       `Exemptions` = exemptions_base,
       `Federal Taxable Income` = taxable_income_base,
       `Capital Gains/Dividends Tax` = capgains_tax_base,
-      `Ordinary Income Tax` = tax_base,
-      `Total Federal Tax` = capgains_tax_base + tax_base,
-      `Child Credit` = child_credit_base
+      `Ordinary Income Tax` = round(tax_base,0),
+      `Total Federal Tax` = round(capgains_tax_base + tax_base, 0),
+      `Child Credit` = child_credit_base,
+      `Tax After (Non-Refundable) Child Credit` = tax_post_cc_base
     )) %>% 
       select(-scenario) %>% 
       map_df(scales::comma) %>% 
-      gather(Item, `Pre TCJA (TY 2017)`, AGI:`Child Credit`)
+      gather(Item, `Pre TCJA (TY 2017)`, AGI:`Tax After (Non-Refundable) Child Credit`)
     
     #data_alt
     tot_item_alt <- input$med + input$intpd + min(10000,input$txpaid) + input$char 
@@ -62,11 +64,23 @@ function(input, output) {
     
     exemptions_alt <- 0
     
-    taxable_income_alt <- input$agi - max(st_ded_alt, tot_item_alt) - input$capgains
+    taxable_income_alt <- max(0,
+                              input$agi - max(st_ded_alt, tot_item_alt)) 
     
-    capgains_tax_alt <- input$capgains * capgains_rate(input$status, taxable_income_alt,"Alt")
+    capgains_tax_alt <- max(0,
+                            input$capgains * capgains_rate(input$status, taxable_income_alt,"Alt"))
     
-    tax_alt <- calculate_tax(input$status, taxable_income_alt, "Alt")
+    tax_alt <- max(0,
+                   calculate_tax(input$status, taxable_income_alt-input$capgains, "Alt"))
+    
+    cc_phase_floor_alt <- filter(childcr, status==input$status, basealt == "Alt") %>% 
+      pull(ccred_phaseout)
+    
+    child_phaseout_alt <- ceiling((max(0,as.numeric(input$agi) - cc_phase_floor_alt))/1000)*50
+    
+    child_credit_alt <- max(0,input$child * 2000 - child_phaseout_alt)
+    
+    tax_post_cc_alt <- round(capgains_tax_alt + tax_alt, 0)-child_credit_alt
     
     data_alt <- as_tibble(list(
       scenario = "Alt",
@@ -79,18 +93,20 @@ function(input, output) {
       `Exemptions` = exemptions_alt,
       `Federal Taxable Income` = taxable_income_alt,
       `Capital Gains/Dividends Tax` = capgains_tax_alt,
-      `Ordinary Income Tax` = tax_alt,
-      `Total Federal Tax` = capgains_tax_alt + tax_alt,
-      `Child Credit` = 0
+      `Ordinary Income Tax` = round(tax_alt,0),
+      `Total Federal Tax` = round(capgains_tax_alt + tax_alt, 0),
+      `Child Credit` = child_credit_alt,
+      `Tax After (Non-Refundable) Child Credit` = tax_post_cc_alt
     )) %>% 
       select(-scenario) %>%
       map_df(scales::comma) %>% 
-      gather(Item, `Post TCJA (TY 2018)`, AGI:`Child Credit`)
+      gather(Item, `Post TCJA (TY 2018)`, AGI:`Tax After (Non-Refundable) Child Credit`)
     
     output <- left_join(data_base, data_alt) 
     
-    
-    output
+    list(output = output,
+         oldtax = tax_post_cc_base,
+         newtax = tax_post_cc_alt)
   })
   
   # output$taxgraph <- renderPlot({
@@ -113,8 +129,20 @@ function(input, output) {
   # })
   # 
   
+  output$summary <- renderText({
+    oldtax <- scales::comma(calctax()[[2]])
+    newtax <- scales::comma(calctax()[[3]])
+    
+    text <- paste0("The filer's 2017 federal tax under old law would have been <b>$",
+                   oldtax,
+                   ".</b> The filer's 2018 federal tax under the TCJA will be <b>$", 
+                   newtax, 
+                   "</b>.")
+    HTML(text)
+    
+  })
   output$taxtable <- renderTable({
-    calctax()
+    calctax()[[1]]
   })
   
 }
