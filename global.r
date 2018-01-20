@@ -19,6 +19,24 @@ stded <- as_tibble(list(
   )
 ))
 
+
+childcr <- as_tibble(list(
+  status = rep(c("Married Filing Jointly","Single","Head of Household","Married Filing Separately"), 2),
+  basealt = c(rep("Base", 4), rep("Alt", 4)),
+  ccred_phaseout = c(
+    #2017 Amounts
+    110000, #MFJ
+    75000,  #S
+    75000,  #HOH
+    55000,  #MFS
+    #2018 Amounts
+    400000, #MFJ
+    200000,  #S
+    200000,  #HOH
+    200000
+  )
+))
+
 #read in pease 
 pease_limits <- as_tibble(list(
   status = c("Married Filing Jointly","Single","Head of Household","Married Filing Separately"),
