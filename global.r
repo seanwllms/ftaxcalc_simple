@@ -6,11 +6,11 @@ stded <- as_tibble(list(
   status = rep(c("Married Filing Jointly","Single","Head of Household","Married Filing Separately"), 2),
   basealt = c(rep("Base", 4), rep("Alt", 4)),
   standard_deduction = c(
-    #2017 Amounts
-    12700, #MFJ
-    6350,  #S
-    9350,  #HOH
-    6350,  #MFS
+    #2018 Amounts (November Forecast)
+    13000, #MFJ
+    6500,  #S
+    9550,  #HOH
+    6500,  #MFS
     #2018 Amounts
     24000, #MFJ
     12000,  #S
@@ -24,7 +24,7 @@ childcr <- as_tibble(list(
   status = rep(c("Married Filing Jointly","Single","Head of Household","Married Filing Separately"), 2),
   basealt = c(rep("Base", 4), rep("Alt", 4)),
   ccred_phaseout = c(
-    #2017 Amounts
+    #2018 Amounts (old law)
     110000, #MFJ
     75000,  #S
     75000,  #HOH
@@ -40,7 +40,7 @@ childcr <- as_tibble(list(
 #read in pease 
 pease_limits <- as_tibble(list(
   status = c("Married Filing Jointly","Single","Head of Household","Married Filing Separately"),
-  limit = c(313800, 261500,287650,156900)
+  limit = c(320000, 266700,293350,160000)
 ))
 
 #read in bracket information

@@ -55,7 +55,7 @@ function(input, output) {
     )) %>% 
       select(-scenario) %>% 
       map_df(scales::comma) %>% 
-      gather(Item, `Pre TCJA (TY 2017)`, AGI:`Tax After (Non-Refundable) Child Credit`)
+      gather(Item, `Pre TCJA (TY 2018 projected)`, AGI:`Tax After (Non-Refundable) Child Credit`)
     
     #data_alt
     salt_limit <- ifelse(input$status == "Married Filing Separately", 5000, 10000)
