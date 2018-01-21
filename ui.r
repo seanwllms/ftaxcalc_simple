@@ -14,8 +14,11 @@ pageWithSidebar(
     h3("Itemized Deductions"),
     p("1040 Schedule A line in parentheses"),
     numericInput('med', 'Medical and Dental Expenses (4)', 0, min = 0),
-    numericInput('txpaid', 'Taxes Paid (9)', 0, min = 0),
-    numericInput('intpd', 'Interest Paid (15)', 0, min = 0),
+    numericInput('state', 'State and Local Taxes Paid (5)', 0, min = 0),
+    numericInput('realest', 'Real Estate Taxes Paid (6)', 0, min = 0),
+    numericInput('pptax', 'Personal Property Taxes Paid (7)', 0, min = 0),
+    numericInput('othtax', 'Other Taxes Paid (8)', 0, min = 0),
+    numericInput('intpd', 'Interest Paid (Icl. Mortgage Interest) (15)', 0, min = 0),
     numericInput('char', 'Gifts to Charity (19)', 0, min = 0),
     numericInput('caustheft', 'Casualty & Theft Losses (20)', 0, min = 0),
     numericInput('jobmisc', 'Job Expenses/Miscellaneous (27)', 0, min = 0),
@@ -24,7 +27,9 @@ pageWithSidebar(
   mainPanel(
     h3("Federal Taxes"),
     tableOutput("taxtable"),
-    htmlOutput("summary")
+    htmlOutput("summary"),
+    h3("State Taxes"),
+    tableOutput("mntax")
     #plotOutput("taxgraph")
     
   )

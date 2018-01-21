@@ -2,10 +2,15 @@
 function(input, output) {
   
   calctax <- reactive({
+    ###############################################
+    ########## Calculate Federal Taxes  ###########
+    ###############################################
+    
+    #############PRE-TCJA#############
     
     #base itemized deductions
-    tot_item_base <- input$med + input$intpd + input$txpaid + input$char + 
-      input$jobmisc + input$othermisc + input$caustheft
+    tot_item_base <- input$med + input$intpd + input$state + input$realest +
+    input$pptax + input$othtax + input$char + input$jobmisc + input$othermisc + input$caustheft
     
     #get pease agi threshhold
     pease_agi <- filter(pease_limits, status == input$status) %>%
@@ -15,6 +20,8 @@ function(input, output) {
     
     st_ded_base <- filter(stded, status ==input$status, basealt == "Base") %>% 
       pull(standard_deduction)
+    
+    deductions_claimed_base <- max(st_ded_base, tot_item_base-pease_base)
     
     exemptions_base <- 4050 * (ifelse(input$status == "Married Filing Jointly", 2, 1) + input$dependents)
     
@@ -44,7 +51,7 @@ function(input, output) {
       `Itemized Deductions` = tot_item_base,
       `Pease Limitation on Deductions` = pease_base,
       `Standard Deduction` = st_ded_base,
-      `Deductions Claimed` = max(st_ded_base, tot_item_base-pease_base),
+      `Deductions Claimed` = deductions_claimed_base,
       `Exemptions` = exemptions_base,
       `Federal Taxable Income` = taxable_income_base,
       `Capital Gains/Dividends Tax` = capgains_tax_base,
@@ -56,15 +63,20 @@ function(input, output) {
       select(-scenario) %>% 
       map_df(scales::comma) %>% 
       gather(Item, `Pre TCJA (TY 2018 projected)`, AGI:`Tax After (Non-Refundable) Child Credit`)
+
+    #############POST-TCJA#############
     
     #data_alt
     salt_limit <- ifelse(input$status == "Married Filing Separately", 5000, 10000)
     
-    tot_item_alt <- input$med + input$intpd + min(salt_limit,input$txpaid) + input$char 
+    salt_alt <- min(salt_limit, input$state + input$realest + input$pptax + input$othtax)
+    
+    tot_item_alt <- input$med + input$intpd + salt_alt + input$char 
     
     st_ded_alt <- filter(stded, status ==input$status, basealt == "Alt") %>% 
       pull(standard_deduction)
     
+    deductions_claimed_alt <- max(st_ded_alt, tot_item_alt)
     exemptions_alt <- 0
     
     taxable_income_alt <- max(0,
@@ -93,7 +105,7 @@ function(input, output) {
       `Itemized Deductions` = tot_item_alt,
       `Pease Limitation on Deductions` = 0,
       `Standard Deduction` = st_ded_alt,
-      `Deductions Claimed` = max(st_ded_alt, tot_item_alt),
+      `Deductions Claimed` =deductions_claimed_alt,
       `Exemptions` = exemptions_alt,
       `Federal Taxable Income` = taxable_income_alt,
       `Capital Gains/Dividends Tax` = capgains_tax_alt,
@@ -108,10 +120,64 @@ function(input, output) {
     
     output <- left_join(data_base, data_alt) 
     
+    ###############################################
+    ######### Calculate Minnesota Taxes ###########
+    ###############################################
+    
+    #calculate add-back in the base
+    addback_base <- ifelse(deductions_claimed_base == st_ded_base, 0,
+                       min(input$state, tot_item_base-pease_base-st_ded_base))
+    
+    mti_base <- max(0,taxable_income_base + addback_base)
+    
+    mn_tax_base <- calculate_mntax(input$status, mti_base, "Base")
+    
+    #minnesota taxes base
+    mntax_base <-  as_tibble(list(
+      `Federal Taxable Income` = taxable_income_base,
+      `State Taxes Add-back` = addback_base,
+      `Minnesota Taxable Income` = mti_base,
+      `Minnesota Income Tax` = mn_tax_base
+      
+    )) %>% 
+    map_df(round, digits = 0) %>% 
+    map_df(scales::comma) %>%
+    gather(Item, `Non-conformity`, `Federal Taxable Income`:`Minnesota Income Tax`)
+  
+    
+    #calculate add-back under conformity  
+    
+    income_deducted <- min(min(salt_limit, input$state),
+                           salt_limit - input$pptax -input$othtax - input$realest)
+      
+    addback_alt <- ifelse(deductions_claimed_alt == st_ded_alt, 0,
+                           min(income_deducted, tot_item_alt-st_ded_alt))
+    
+    mti_alt <- max(0,taxable_income_alt + addback_alt)
+    
+    mn_tax_alt <- calculate_mntax(input$status, mti_alt, "Alt")
+    
+    #minnesota taxes base
+    mntax_alt <-  as_tibble(list(
+      `Federal Taxable Income` = taxable_income_alt,
+      `State Taxes Add-back` = addback_alt,
+      `Minnesota Taxable Income` = mti_alt,
+      `Minnesota Income Tax` = mn_tax_alt
+    )) %>% 
+    map_df(round, digits = 0) %>% 
+    map_df(scales::comma) %>%
+    gather(Item, `Conformity`, `Federal Taxable Income`:`Minnesota Income Tax`)
+    
+    mntax_output <- left_join(mntax_base, mntax_alt)
+    
+    #Output list to be used by tables and graphs and text
     list(output = output,
          oldtax = tax_post_cc_base,
-         newtax = tax_post_cc_alt)
+         newtax = tax_post_cc_alt,
+         mntax = mntax_output)
   })
+
+  
   
   # output$taxgraph <- renderPlot({
   #   things_to_graph <- c("AGI", 
@@ -149,4 +215,8 @@ function(input, output) {
     calctax()[[1]]
   })
   
+  output$mntax <- renderTable({
+    calctax()[[4]]
+  })
+
 }

@@ -71,7 +71,7 @@ calculate_tax <- function(filingstatus, fti, scen) {
 #read in capital gains brackets
 capgains <- read_csv("capgains.csv")
 
-#function to calculate tax from taxable income
+#function to capital gains rate from taxable income
 capgains_rate <- function(filingstatus, fti, scen) {
   
   value <- filter(capgains, br_bot < fti & br_top > fti) %>% 
@@ -81,3 +81,28 @@ capgains_rate <- function(filingstatus, fti, scen) {
   value
   
 }
+
+mnbrackets <- read_csv("mnbrackets.csv")
+
+#function to calculate tax from taxable income
+calculate_mntax <- function(filingstatus, fti, scen) {
+  
+  for (br in 1:4) {
+    
+    params <- filter(mnbrackets, bracket == br, status == filingstatus, scenario == scen)
+    bot <- pull(params, br_bot)
+    top <- pull(params, br_top)
+    rate <- pull(params, rate)
+    
+    tax <- max(0,min(fti-bot, top-bot)*rate)
+    #print(paste0("Bracket ", as.character(br), " Tax:", as.character(tax)))
+    varname <- paste0("taxb", br)
+    assign(varname, tax)
+    
+  }
+  
+  tax <- taxb1 + taxb2 + taxb3 + taxb4 
+
+  tax
+}
+
