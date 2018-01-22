@@ -23,10 +23,19 @@ function(input, output) {
     
     deductions_claimed_base <- max(st_ded_base, tot_item_base-pease_base)
     
-    exemptions_base <- 4050 * (ifelse(input$status == "Married Filing Jointly", 2, 1) + input$dependents)
+    personal_exemptions <- ifelse(input$status == "Married Filing Jointly", 2, 1)*4150
+    
+    exemptions_base <- 4150 * input$dependents + personal_exemptions
+    
+    exemptions_phaseout_base <- max(0,
+                                    min(personal_exemptions,
+                                        personal_exemptions*.02*ceiling((input$agi-pease_agi)/2500))
+    )
+    
+    exemptions_allowed <- max(0, exemptions_base-exemptions_phaseout_base)
     
     taxable_income_base <- max(0,
-                               input$agi - max(st_ded_base, tot_item_base-pease_base) - exemptions_base)  
+                               input$agi - max(st_ded_base, tot_item_base-pease_base) - exemptions_allowed)  
     
     capgains_tax_base <- max(0,
                              input$capgains * capgains_rate(input$status, taxable_income_base,"Base"))
@@ -53,6 +62,8 @@ function(input, output) {
       `Standard Deduction` = st_ded_base,
       `Deductions Claimed` = deductions_claimed_base,
       `Exemptions` = exemptions_base,
+      `Personal Exemption Phaseout` = exemptions_phaseout_base,
+      `Exemptions Allowed` = exemptions_allowed,
       `Federal Taxable Income` = taxable_income_base,
       `Capital Gains/Dividends Tax` = capgains_tax_base,
       `Ordinary Income Tax` = round(tax_base,0),
@@ -93,7 +104,10 @@ function(input, output) {
     
     child_phaseout_alt <- ceiling((max(0,as.numeric(input$agi) - cc_phase_floor_alt))/1000)*50
     
-    child_credit_alt <- max(0,input$child * 2000 - child_phaseout_alt)
+    otherdepcred <- ifelse(input$child == input$dependents, 0,
+                           ifelse(input$child < input$dependents, 500*(input$dependents-input$child), 0))
+    
+    child_credit_alt <- max(0,(otherdepcred+input$child * 2000) - child_phaseout_alt) 
     
     tax_post_cc_alt <- max(0,
                            round(capgains_tax_alt + tax_alt, 0)-child_credit_alt)
@@ -107,6 +121,8 @@ function(input, output) {
       `Standard Deduction` = st_ded_alt,
       `Deductions Claimed` =deductions_claimed_alt,
       `Exemptions` = exemptions_alt,
+      `Personal Exemption Phaseout` = 0,
+      `Exemptions Allowed` = exemptions_alt,
       `Federal Taxable Income` = taxable_income_alt,
       `Capital Gains/Dividends Tax` = capgains_tax_alt,
       `Ordinary Income Tax` = round(tax_alt,0),
@@ -125,17 +141,38 @@ function(input, output) {
     ###############################################
     
     #calculate add-back in the base
-    addback_base <- ifelse(deductions_claimed_base == st_ded_base, 0,
+    sttax_addback_base <- ifelse(deductions_claimed_base == st_ded_base, 0,
                        min(input$state, tot_item_base-pease_base-st_ded_base))
     
-    mti_base <- max(0,taxable_income_base + addback_base)
+    #calculate subtraction for disallowed i.d. and personal exemptions
+    disallowed_id_sub <- pease_base
+    disallowed_exemp <- exemptions_phaseout_base
+    disallowed_subtr <- pease_base + exemptions_phaseout_base
     
+    #calculate mn deduction and exemption add-back
+    state_id_limit <- 100000
+    disallowed_id_add <- min(.03*input$agi - state_id_limit, 
+                             .8*(tot_item_base- input$med - input$intpd - input$caustheft))
+    
+    disallowed_pe_add <- 0
+    
+    id_pe_limit_addback <- disallowed_id_add + disallowed_pe_add
+    
+    #calculate taxable income.
+    mti_base <- max(0,taxable_income_base + sttax_addback_base-disallowed_subtr+id_pe_limit_addback)
+    
+    #calculate MN tax.
     mn_tax_base <- calculate_mntax(input$status, mti_base, "Base")
+    
+    
+
     
     #minnesota taxes base
     mntax_base <-  as_tibble(list(
       `Federal Taxable Income` = taxable_income_base,
-      `State Taxes Add-back` = addback_base,
+      `State Taxes Add-back` = sttax_addback_base,
+      `Disallowed Itemized Deductions and Exemptions Subtraction` = disallowed_subtr,
+      `State Itemized Deduction and Personal Exemption Limitation` = id_pe_limit_addback,
       `Minnesota Taxable Income` = mti_base,
       `Minnesota Income Tax` = mn_tax_base
       
@@ -146,21 +183,22 @@ function(input, output) {
   
     
     #calculate add-back under conformity  
-    
     income_deducted <- min(min(salt_limit, input$state),
                            salt_limit - input$pptax -input$othtax - input$realest)
       
-    addback_alt <- ifelse(deductions_claimed_alt == st_ded_alt, 0,
+    sttax_addback_alt <- ifelse(deductions_claimed_alt == st_ded_alt, 0,
                            min(income_deducted, tot_item_alt-st_ded_alt))
     
-    mti_alt <- max(0,taxable_income_alt + addback_alt)
+    
+    mti_alt <- max(0,taxable_income_alt + sttax_addback_alt)
     
     mn_tax_alt <- calculate_mntax(input$status, mti_alt, "Alt")
     
     #minnesota taxes base
     mntax_alt <-  as_tibble(list(
       `Federal Taxable Income` = taxable_income_alt,
-      `State Taxes Add-back` = addback_alt,
+      `State Taxes Add-back` = sttax_addback_alt,
+      `Disallowed Itemized Deductions and Exemptions Subtraction` = 0, 
       `Minnesota Taxable Income` = mti_alt,
       `Minnesota Income Tax` = mn_tax_alt
     )) %>% 

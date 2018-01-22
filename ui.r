@@ -1,16 +1,16 @@
 
 # Define UI for application
 pageWithSidebar(
-  headerPanel('Tax Cuts and Jobs Act; Example Calculations'),
+  headerPanel('TCJA Tax Calculator'),
   sidebarPanel(
     selectInput('status', 'Filing Status', choices = c("Married Filing Jointly",
                                                        "Single",
                                                        "Head of Household",
                                                        "Married Filing Separately")),
     numericInput('dependents', "# of Dependents", 2, min=0),
-    numericInput('child', "Children 17 and Younger", 2, min=0),
+    numericInput('child', "Children 16 and Younger", 2, min=0),
     numericInput('agi', 'Adjusted Gross Income', 63217),
-    numericInput('capgains', 'Long Term Dividends/Capital Gains', 0),
+    numericInput('capgains', 'Long-term Dividends/Qualified Capital Gains', 0),
     h3("Itemized Deductions"),
     p("1040 Schedule A line in parentheses"),
     numericInput('med', 'Medical and Dental Expenses (4)', 0, min = 0),
@@ -28,7 +28,7 @@ pageWithSidebar(
     h3("Federal Taxes"),
     tableOutput("taxtable"),
     htmlOutput("summary"),
-    h3("State Taxes"),
+    h3("Minnesota Taxes"),
     tableOutput("mntax")
     #plotOutput("taxgraph")
     
