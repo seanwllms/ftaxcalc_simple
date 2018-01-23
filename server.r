@@ -173,8 +173,8 @@ function(input, output) {
     #minnesota taxes base
     mntax_base <-  as_tibble(list(
       `Federal Taxable Income` = taxable_income_base,
-      `State Taxes Add-back` = sttax_addback_base,
-      `Disallowed Itemized Deductions and Exemptions Subtraction` = disallowed_subtr,
+      `+ State Taxes Add-back` = sttax_addback_base,
+      `- Disallowed Itemized Deductions and Exemptions Subtraction` = disallowed_subtr,
       #`State Itemized Deduction and Personal Exemption Limitation` = id_pe_limit_addback,
       `Minnesota Taxable Income` = mti_base,
       `Minnesota Income Tax` = mn_tax_base
@@ -202,8 +202,8 @@ function(input, output) {
     #minnesota taxes base
     mntax_alt <-  as_tibble(list(
       `Federal Taxable Income` = taxable_income_alt,
-      `State Taxes Add-back` = sttax_addback_alt,
-      `Disallowed Itemized Deductions and Exemptions Subtraction` = 0, 
+      `+ State Taxes Add-back` = sttax_addback_alt,
+      `- Disallowed Itemized Deductions and Exemptions Subtraction` = 0, 
       `Minnesota Taxable Income` = mti_alt,
       `Minnesota Income Tax` = mn_tax_alt
     )) %>% 
@@ -259,7 +259,9 @@ function(input, output) {
   })
   
   output$mntax <- renderTable({
-    calctax()[[4]]
-  })
+    calctax()[[4]]},
+    striped = TRUE, 
+    spacing = 'xs'
+  )
 
 }
