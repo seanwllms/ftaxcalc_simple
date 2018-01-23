@@ -147,35 +147,42 @@ function(input, output) {
     )
     
     #calculate subtraction for disallowed i.d. and personal exemptions
-    disallowed_id_sub <- pease_base
+    disallowed_id_sub <- ifelse(deductions_claimed_base == st_ded_base, 0, pease_base)
     disallowed_exemp <- exemptions_phaseout_base
     disallowed_subtr <- pease_base + exemptions_phaseout_base
     
     #calculate mn deduction and exemption add-back
-    state_id_limit <- 100000
-    disallowed_id_add <- 0 #min(.03*input$agi - state_id_limit, 
-                          #   .8*(tot_item_base- input$med - input$intpd - input$caustheft))
+    state_id_limit_base <- state_id_lim %>%
+      filter(status == input$status, basealt == "Base") %>%
+      pull(id_lim)
+      
+    
+    if (deductions_claimed_base == st_ded_base) {
+      disallowed_id_add <- 0
+    } else {
+      disallowed_id_add <- min(.03*(input$agi - state_id_limit_base), 
+                               .8*(tot_item_base- input$med - input$intpd - input$caustheft))
+      disallowed_id_add <- max(disallowed_id_add, 0)
+    }
     
     disallowed_pe_add <- 0
     
-    id_pe_limit_addback <- 0 #disallowed_id_add + disallowed_pe_add
+    id_pe_limit_addback_base <- disallowed_id_add + disallowed_pe_add
     
     #calculate taxable income.
     mti_base <- max(0,
-                    taxable_income_base + sttax_addback_base-disallowed_subtr+id_pe_limit_addback)
+                    taxable_income_base + sttax_addback_base-disallowed_subtr+id_pe_limit_addback_base)
     
     #calculate MN tax.
     mn_tax_base <- calculate_mntax(input$status, mti_base, "Base")
     
-    
-
     
     #minnesota taxes base
     mntax_base <-  as_tibble(list(
       `Federal Taxable Income` = taxable_income_base,
       `+ State Taxes Add-back` = sttax_addback_base,
       `- Disallowed Itemized Deductions and Exemptions Subtraction` = disallowed_subtr,
-      #`State Itemized Deduction and Personal Exemption Limitation` = id_pe_limit_addback,
+      `+ State Itemized Deduction and Personal Exemption Limitation` = id_pe_limit_addback_base,
       `Minnesota Taxable Income` = mti_base,
       `Minnesota Income Tax` = mn_tax_base
       
@@ -203,7 +210,8 @@ function(input, output) {
     mntax_alt <-  as_tibble(list(
       `Federal Taxable Income` = taxable_income_alt,
       `+ State Taxes Add-back` = sttax_addback_alt,
-      `- Disallowed Itemized Deductions and Exemptions Subtraction` = 0, 
+      `- Disallowed Itemized Deductions and Exemptions Subtraction` = 0,
+      `+ State Itemized Deduction and Personal Exemption Limitation` = 0,
       `Minnesota Taxable Income` = mti_alt,
       `Minnesota Income Tax` = mn_tax_alt
     )) %>% 

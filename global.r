@@ -71,6 +71,24 @@ calculate_tax <- function(filingstatus, fti, scen) {
 #read in capital gains brackets
 capgains <- read_csv("capgains.csv")
 
+#state itemized deduction limitation
+state_id_lim <- as_tibble(list(
+  status = rep(c("Married Filing Jointly","Single","Head of Household","Married Filing Separately"), 2),
+  basealt = c(rep("Base", 4), rep("Alt", 4)),
+  id_lim = c(
+    #2018 Amounts (November Forecast)
+    190050, #MFJ
+    190050,  #S
+    190050,  #HOH
+    95025,  #MFS
+    #2018 Amounts
+    190050, #MFJ
+    190050,  #S
+    190050,  #HOH
+    95025  #MFS
+  )
+))
+
 #function to capital gains rate from taxable income
 capgains_rate <- function(filingstatus, fti, scen) {
   
