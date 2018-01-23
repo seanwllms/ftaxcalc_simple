@@ -77,7 +77,7 @@ function(input, output) {
 
     #############POST-TCJA#############
     
-    #data_alt
+    #SALT data_alt
     salt_limit <- ifelse(input$status == "Married Filing Separately", 5000, 10000)
     
     salt_alt <- min(salt_limit, input$state + input$realest + input$pptax + input$othtax)
@@ -141,8 +141,10 @@ function(input, output) {
     ###############################################
     
     #calculate add-back in the base
-    sttax_addback_base <- ifelse(deductions_claimed_base == st_ded_base, 0,
-                       min(input$state, tot_item_base-pease_base-st_ded_base))
+    sttax_addback_base <- max(0,
+                              ifelse(deductions_claimed_base == st_ded_base, 0,
+                                     min(input$state, tot_item_base-pease_base-st_ded_base))
+    )
     
     #calculate subtraction for disallowed i.d. and personal exemptions
     disallowed_id_sub <- pease_base
@@ -151,15 +153,16 @@ function(input, output) {
     
     #calculate mn deduction and exemption add-back
     state_id_limit <- 100000
-    disallowed_id_add <- min(.03*input$agi - state_id_limit, 
-                             .8*(tot_item_base- input$med - input$intpd - input$caustheft))
+    disallowed_id_add <- 0 #min(.03*input$agi - state_id_limit, 
+                          #   .8*(tot_item_base- input$med - input$intpd - input$caustheft))
     
     disallowed_pe_add <- 0
     
-    id_pe_limit_addback <- disallowed_id_add + disallowed_pe_add
+    id_pe_limit_addback <- 0 #disallowed_id_add + disallowed_pe_add
     
     #calculate taxable income.
-    mti_base <- max(0,taxable_income_base + sttax_addback_base-disallowed_subtr+id_pe_limit_addback)
+    mti_base <- max(0,
+                    taxable_income_base + sttax_addback_base-disallowed_subtr+id_pe_limit_addback)
     
     #calculate MN tax.
     mn_tax_base <- calculate_mntax(input$status, mti_base, "Base")
@@ -172,7 +175,7 @@ function(input, output) {
       `Federal Taxable Income` = taxable_income_base,
       `State Taxes Add-back` = sttax_addback_base,
       `Disallowed Itemized Deductions and Exemptions Subtraction` = disallowed_subtr,
-      `State Itemized Deduction and Personal Exemption Limitation` = id_pe_limit_addback,
+      #`State Itemized Deduction and Personal Exemption Limitation` = id_pe_limit_addback,
       `Minnesota Taxable Income` = mti_base,
       `Minnesota Income Tax` = mn_tax_base
       
@@ -186,8 +189,10 @@ function(input, output) {
     income_deducted <- min(min(salt_limit, input$state),
                            salt_limit - input$pptax -input$othtax - input$realest)
       
-    sttax_addback_alt <- ifelse(deductions_claimed_alt == st_ded_alt, 0,
-                           min(income_deducted, tot_item_alt-st_ded_alt))
+    sttax_addback_alt <- max(0,
+                             ifelse(deductions_claimed_alt == st_ded_alt, 0,
+                                    min(income_deducted, tot_item_alt-st_ded_alt))
+    )
     
     
     mti_alt <- max(0,taxable_income_alt + sttax_addback_alt)
