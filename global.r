@@ -89,6 +89,26 @@ state_id_lim <- as_tibble(list(
   )
 ))
 
+#state itemized deduction limitation
+state_pe_lim <- as_tibble(list(
+  status = rep(c("Married Filing Jointly","Single","Head of Household","Married Filing Separately"), 2),
+  basealt = c(rep("Base", 4), rep("Alt", 4)),
+  pe_lim = c(
+    #2018 Amounts (November Forecast)
+    285050, #MFJ
+    190050,  #S
+    237550,  #HOH
+    142500,  #MFS
+    #2018 Amounts
+    285050, #MFJ
+    190050,  #S
+    237550,  #HOH
+    142500  #MFS
+  )
+))
+
+
+
 #function to capital gains rate from taxable income
 capgains_rate <- function(filingstatus, fti, scen) {
   

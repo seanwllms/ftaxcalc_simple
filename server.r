@@ -140,78 +140,157 @@ function(input, output) {
     ######### Calculate Minnesota Taxes ###########
     ###############################################
     
+    ############################################
+    ########   TAXES UNDER NONCONFORMITY #######
+    ############################################
+    
+
+####calculate state taxes add-back####   
+  
     #calculate add-back in the base
     sttax_addback_base <- max(0,
-                              ifelse(deductions_claimed_base == st_ded_base, 0,
-                                     min(input$state, tot_item_base-pease_base-st_ded_base))
+                              ifelse(deductions_claimed_base == st_ded_base, 0, input$state)
     )
     
     #calculate subtraction for disallowed i.d. and personal exemptions
     disallowed_id_sub <- ifelse(deductions_claimed_base == st_ded_base, 0, pease_base)
     disallowed_exemp <- exemptions_phaseout_base
     disallowed_subtr <- pease_base + exemptions_phaseout_base
+  
+####calculate mn itemized deduction add back####
     
-    #calculate mn deduction and exemption add-back
+    #get threshold
     state_id_limit_base <- state_id_lim %>%
       filter(status == input$status, basealt == "Base") %>%
       pull(id_lim)
       
-    
+    #only add back i.d. if itemizing
     if (deductions_claimed_base == st_ded_base) {
-      disallowed_id_add <- 0
+      disallowed_id_add_base <- 0
     } else {
-      disallowed_id_add <- min(.03*(input$agi - state_id_limit_base), 
+      #limit i.d. to limits
+      disallowed_id_add_base <- min(.03*(input$agi - state_id_limit_base), 
                                .8*(tot_item_base- input$med - input$intpd - input$caustheft))
-      disallowed_id_add <- max(disallowed_id_add, 0)
+      
+      #don't add back negative numbers
+      disallowed_id_add_base <- max(disallowed_id_add_base, 0)
     }
     
-    disallowed_pe_add <- 0
+####calculate mn personal exemption add back####
     
-    id_pe_limit_addback_base <- disallowed_id_add + disallowed_pe_add
+    #get limit
+    state_pe_limit_base <- state_pe_lim %>%
+      filter(status == input$status, basealt == "Base") %>%
+      pull(pe_lim)
+     
+    #get phaseout rate
+    phaseoutrate <- ifelse(input$status == "Married Filing Separately", 1250, 2500)
     
-    #calculate taxable income.
+    #calculate disallowed p.e.
+    disallowed_pe_add_base <- personal_exemptions*ceiling((input$agi-state_pe_limit_base)/phaseoutrate)*.02
+    
+    #limit to exemptions claimed and disallow negative numbers
+    disallowed_pe_add_base <- max(0,min(disallowed_pe_add_base, exemptions_base))
+
+#### Organize all of the add-back stufff ####
+    
+    #### Get combined add-back of i.d. and p.e #####
+    id_pe_limit_addback_base <- disallowed_pe_add_base + disallowed_id_add_base
+    
+    #calculate add-backs total
+    addbacks_base <-  sttax_addback_base + disallowed_id_add_base 
+      
+    if ((deductions_claimed_base - disallowed_id_add_base - sttax_addback_base) < st_ded_base) {
+        addbacks_base <- deductions_claimed_base - st_ded_base
+    }
+    
+  
+##### Calculate Minnesota Taxable Income & Tax ##### 
+   
+    #Calculate MTI
     mti_base <- max(0,
-                    taxable_income_base + sttax_addback_base-disallowed_subtr+id_pe_limit_addback_base)
+                    taxable_income_base - disallowed_subtr + addbacks_base + disallowed_pe_add_base)
     
     #calculate MN tax.
     mn_tax_base <- calculate_mntax(input$status, mti_base, "Base")
-    
-    
+
+      
+##### Pull tax table togetehr for base ######
     #minnesota taxes base
     mntax_base <-  as_tibble(list(
       `Federal Taxable Income` = taxable_income_base,
-      `+ State Taxes Add-back` = sttax_addback_base,
       `- Disallowed Itemized Deductions and Exemptions Subtraction` = disallowed_subtr,
+      `+ State Taxes Add-back` = sttax_addback_base,
       `+ State Itemized Deduction and Personal Exemption Limitation` = id_pe_limit_addback_base,
       `Minnesota Taxable Income` = mti_base,
       `Minnesota Income Tax` = mn_tax_base
-      
     )) %>% 
     map_df(round, digits = 0) %>% 
     map_df(scales::comma) %>%
     gather(Item, `Non-conformity`, `Federal Taxable Income`:`Minnesota Income Tax`)
   
+    ############################################
+    ########   TAXES UNDER NONCONFORMITY #######
+    ############################################
     
-    #calculate add-back under conformity  
+    
+####calculate state taxes add-back####       
     income_deducted <- min(min(salt_limit, input$state),
                            salt_limit - input$pptax -input$othtax - input$realest)
       
     sttax_addback_alt <- max(0,
-                             ifelse(deductions_claimed_alt == st_ded_alt, 0,
-                                    min(income_deducted, tot_item_alt-st_ded_alt))
-    )
+                             ifelse(deductions_claimed_alt == st_ded_alt, 0, income_deducted))
     
+####calculate mn itemized deduction add back####
     
-    mti_alt <- max(0,taxable_income_alt + sttax_addback_alt)
+    #get threshold
+    state_id_limit_alt <- state_id_lim %>%
+      filter(status == input$status, basealt == "Alt") %>%
+      pull(id_lim)
+    
+    #only add back i.d. if itemizing
+    if (deductions_claimed_alt == st_ded_alt) {
+      disallowed_id_add_alt <- 0
+    } else {
+    #limit i.d. to limits
+      disallowed_id_add_alt <- min(.03*(input$agi - state_id_limit_alt), 
+                                  .8*(tot_item_alt - input$med - input$intpd - input$caustheft))
+    #don't add back negative numbers
+      disallowed_id_add_alt <- max(disallowed_id_add_alt, 0)    
+    }
+
+####calculate mn personal exemption add back####
+    disallowed_pe_add_alt <- 0
+
+        
+#### Organize all of the add-back stufff ####
+    
+    #### Get combined add-back of i.d. and p.e #####
+    id_pe_limit_addback_alt <- disallowed_pe_add_alt + disallowed_id_add_alt
+    
+    #calculate add-backs total
+    addbacks_alt <-  sttax_addback_alt + disallowed_id_add_alt
+    
+    if ((deductions_claimed_alt - disallowed_id_add_alt - sttax_addback_alt) < st_ded_alt) {
+      addbacks_alt <- deductions_claimed_alt - st_ded_alt
+    }
+    
+##### Calculate Minnesota Taxable Income & Tax ##### 
+    
+    #Calculate MTI
+    mti_alt <- max(0,
+                    taxable_income_alt + addbacks_alt)
+
     
     mn_tax_alt <- calculate_mntax(input$status, mti_alt, "Alt")
-    
-    #minnesota taxes base
+
+##### Pull tax table togetehr for alt ######
+    #minnesota taxes alt
     mntax_alt <-  as_tibble(list(
       `Federal Taxable Income` = taxable_income_alt,
-      `+ State Taxes Add-back` = sttax_addback_alt,
       `- Disallowed Itemized Deductions and Exemptions Subtraction` = 0,
-      `+ State Itemized Deduction and Personal Exemption Limitation` = 0,
+      `+ State Taxes Add-back` = sttax_addback_alt,
+      `+ State Itemized Deduction and Personal Exemption Limitation` = id_pe_limit_addback_alt,
       `Minnesota Taxable Income` = mti_alt,
       `Minnesota Income Tax` = mn_tax_alt
     )) %>% 
@@ -254,7 +333,7 @@ function(input, output) {
     oldtax <- scales::comma(calctax()[[2]])
     newtax <- scales::comma(calctax()[[3]])
     
-    text <- paste0("After subtracting the child credit, the filer's 2017 federal tax under old law would have been <b>$",
+    text <- paste0("After subtracting the child credit, the filer's 2018 federal tax under old law would have been <b>$",
                    oldtax,
                    ".</b> Under the Tax Cuts and Jobs Act in 2018, that will be <b>$", 
                    newtax, 
