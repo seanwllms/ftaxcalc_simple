@@ -1,5 +1,6 @@
 library(shiny)
 library(tidyverse)
+library(glue)
 
 #read in standard deduction info
 stded <- as_tibble(list(

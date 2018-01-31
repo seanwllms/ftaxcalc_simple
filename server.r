@@ -307,7 +307,9 @@ function(input, output) {
     list(output = output,
          oldtax = tax_post_cc_base,
          newtax = tax_post_cc_alt,
-         mntax = mntax_output)
+         mntax = mntax_output,
+         oldmntx = mn_tax_alt,
+         newmntx = mn_tax_base)
   })
 
   
@@ -336,14 +338,84 @@ function(input, output) {
     oldtax <- scales::comma(calctax()[[2]])
     newtax <- scales::comma(calctax()[[3]])
     
-    text <- paste0("After subtracting the child credit, the filer's 2018 federal tax under old law would have been <b>$",
-                   oldtax,
-                   ".</b> Under the Tax Cuts and Jobs Act in 2018, that will be <b>$", 
-                   newtax, 
-                   "</b>.")
-    HTML(text)
+    text <- glue("
+                  After subtracting the child credit, \\
+                  the filer's 2018 federal tax under old \\
+                  law would have been <b>${oldfedtax}.</b> \\
+                  Under the Tax Cuts and Jobs Act \\
+                  that will be <b>${newtax}.</b>
+                  ",
+                  oldfedtax = oldtax,
+                  newfedtax = newtax)
+    
+    text
     
   })
+  
+  
+  output$mnsummary <- renderText({
+    oldtax <- scales::comma(round(calctax()[[5]]),0)
+    newtax <- scales::comma(round(calctax()[[6]]),0)
+    
+    text <- glue("
+                  The filer's 2018 Minnesota tax under \\
+                  non-conformity would be <b>${oldmntax}.</b> \\
+                  If Minnesota conforms and makes no other \\
+                  changes, the filer's tax will be <b>${newmntax}.</b>
+                  ",
+                 oldmntax = oldtax,
+                 newmntax = newtax)
+    
+    text
+    
+  })
+  
+  output$caveats <- renderText({
+    text <- glue("
+
+<h3>How this works</h3>
+<p>This calculator only models the effects of the Tax Cuts and 
+Jobs Act (TCJA) on individual tax liability; <b>it does not account
+for changes to federal law regarding pass-through entities and 
+corporations.</b> The description of state conformity
+assumes that Minnesota would simply update its statutory references
+to the Internal Revenue Code to reflect the changes resulting from 
+the passage of the federal law and make no other changes </p>
+<p>In order to accurately model the effects of the federal 
+tax cuts and jobs act on individual federal and state taxes, the 
+application makes a few assumptions:</p>
+<ol><li>The calculator starts with federal adjusted gross income. 
+This means that it does not account for changes to \"above the line\" 
+deductions under the TCJA. For example, it does 
+not account for the elimination of the federal moving expense deduction.</li>
+<li>The calculator does not account for all changes to federal itemized 
+deductions. Provisions not accounted for include: 
+<ul><li>The decrease in the AGI threshhold for the medical 
+expense deduction.</li>
+<li>The elimination of the deduction for home equity loans.</li>
+<li>The reduction on the debt principal limitaiton for the 
+mortgage interest deduction.</ul>
+ </li>
+<li>The calculator does not account for the effects of the TCJA on 
+the state and federal Alternative Minimum tax.</li>
+<li>The Department of Revenue has interpreted Minnesota law as 
+requiring consistent federal and state elections for the purposes of claiming 
+either the standard deduction or itemizing. In the case of non-conformity, 
+filers with itemized deductions that are greater than the Minnesota 
+standard deduction but less than the federal standard deduction may 
+benefit from itemizing their deductions. The calculator assumes 
+that the filer would claim the standard deduction, because 
+it is greater.</li>
+<li>When calculating state income tax add-back under conformity, filers with
+more than $10,000 in combined property and income taxes are assumed to 
+deduct their property taxes first. This matches the Department of Revenue's 
+assumption about how conformity would be administered.
+</ol>
+<p>
+                 ")
+    text
+  })
+  
   output$taxtable <- renderTable({
     calctax()[[1]]
   })
