@@ -27,10 +27,13 @@ function(input, output) {
     
     exemptions_base <- 4150 * input$dependents + personal_exemptions
     
+    exemptions_phaseout_base <- ceiling((input$agi-pease_agi)/2500)*.02*exemptions_base
+    
+    #limit to exemptions claimed and disallow numbers below zero.
     exemptions_phaseout_base <- max(0,
-                                    min(personal_exemptions,
-                                        personal_exemptions*.02*ceiling((input$agi-pease_agi)/2500))
-    )
+                                    min(exemptions_base, exemptions_phaseout_base))
+    
+    
     
     exemptions_allowed <- max(0, exemptions_base-exemptions_phaseout_base)
     
@@ -187,7 +190,7 @@ function(input, output) {
     phaseoutrate <- ifelse(input$status == "Married Filing Separately", 1250, 2500)
     
     #calculate disallowed p.e.
-    disallowed_pe_add_base <- personal_exemptions*ceiling((input$agi-state_pe_limit_base)/phaseoutrate)*.02
+    disallowed_pe_add_base <- exemptions_base*ceiling((input$agi-state_pe_limit_base)/phaseoutrate)*.02
     
     #limit to exemptions claimed and disallow negative numbers
     disallowed_pe_add_base <- max(0,min(disallowed_pe_add_base, exemptions_base))
