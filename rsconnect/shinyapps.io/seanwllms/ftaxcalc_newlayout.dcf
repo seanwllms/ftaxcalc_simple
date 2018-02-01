@@ -1,0 +1,12 @@
+name: ftaxcalc_newlayout
+title: ftaxcalc_newlayout
+username:
+account: seanwllms
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 268096
+bundleId: 1201815
+url: https://seanwllms.shinyapps.io/ftaxcalc_newlayout/
+when: 1517435706.8859
+asMultiple: FALSE
+asStatic: FALSE

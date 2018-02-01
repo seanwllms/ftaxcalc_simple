@@ -1,0 +1,33 @@
+scenario,status,bracket,br_bot,br_top,rate
+Base,Single,1,0,25890,0.0535
+Base,Single,2,25890,85060,0.0705
+Base,Single,3,85060,160020,0.0785
+Base,Single,4,160020,9.00E+13,0.0985
+Base,Married Filing Jointly,1,0,37850,0.0535
+Base,Married Filing Jointly,2,37850,150380,0.0705
+Base,Married Filing Jointly,3,150380,266700,0.0785
+Base,Married Filing Jointly,4,266700,9.00E+13,0.0985
+Base,Head of Household,1,0,31880,0.0535
+Base,Head of Household,2,31880,128090,0.0705
+Base,Head of Household,3,128090,213360,0.0785
+Base,Head of Household,4,213360,9.00E+13,0.0985
+Base,Married Filing Separately,1,0,18930,0.0535
+Base,Married Filing Separately,2,18930,75190,0.0705
+Base,Married Filing Separately,3,75190,13350,0.0785
+Base,Married Filing Separately,4,13350,9.00E+13,0.0985
+Alt,Single,1,0,25890,0.0535
+Alt,Single,2,35890,85060,0.0705
+Alt,Single,3,85060,160020,0.0785
+Alt,Single,4,160020,9.00E+13,0.0985
+Alt,Married Filing Jointly,1,0,37850,0.0535
+Alt,Married Filing Jointly,2,37850,150380,0.0705
+Alt,Married Filing Jointly,3,150380,266700,0.0785
+Alt,Married Filing Jointly,4,266700,9.00E+13,0.0985
+Alt,Head of Household,1,0,31880,0.0535
+Alt,Head of Household,2,31880,128090,0.0705
+Alt,Head of Household,3,128090,213360,0.0785
+Alt,Head of Household,4,213360,9.00E+13,0.0985
+Alt,Married Filing Separately,1,0,18930,0.0535
+Alt,Married Filing Separately,2,18930,75190,0.0705
+Alt,Married Filing Separately,3,75190,13350,0.0785
+Alt,Married Filing Separately,4,13350,9.00E+13,0.0985

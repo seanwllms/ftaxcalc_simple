@@ -1,0 +1,57 @@
+scenario,status,bracket,br_bot,br_top,rate
+Base,Single,1,0,9525,0.1
+Base,Single,2,9525,38700,0.15
+Base,Single,3,38700,93700,0.25
+Base,Single,4,93700,195450,0.28
+Base,Single,5,195450,424950,0.33
+Base,Single,6,424950,426700,0.35
+Base,Single,7,426700,10000000000000,0.396
+Base,Married Filing Jointly,1,0,19050,0.1
+Base,Married Filing Jointly,2,19050,77400,0.15
+Base,Married Filing Jointly,3,77400,156150,0.25
+Base,Married Filing Jointly,4,156150,237950,0.28
+Base,Married Filing Jointly,5,237950,424950,0.33
+Base,Married Filing Jointly,6,424950,480050,0.35
+Base,Married Filing Jointly,7,480050,10000000000000,0.396
+Base,Head of Household,1,0,13600,0.1
+Base,Head of Household,2,13600,51850,0.15
+Base,Head of Household,3,51850,133850,0.25
+Base,Head of Household,4,133850,216700,0.28
+Base,Head of Household,5,216700,424950,0.33
+Base,Head of Household,6,424950,453350,0.35
+Base,Head of Household,7,453350,10000000000000,0.396
+Base,Married Filing Separately,1,0,9525,0.1
+Base,Married Filing Separately,2,9525,38700,0.15
+Base,Married Filing Separately,3,38700,78050,0.25
+Base,Married Filing Separately,4,78050,118950,0.28
+Base,Married Filing Separately,5,118950,212450,0.33
+Base,Married Filing Separately,6,212450,240025,0.35
+Base,Married Filing Separately,7,240025,10000000000000,0.396
+Alt,Single,1,0,9525,0.1
+Alt,Single,2,9525,38700,0.12
+Alt,Single,3,38700,82500,0.22
+Alt,Single,4,82500,157500,0.24
+Alt,Single,5,157500,200000,0.32
+Alt,Single,6,200000,500000,0.35
+Alt,Single,7,500000,10000000000000,0.37
+Alt,Married Filing Jointly,1,0,19050,0.1
+Alt,Married Filing Jointly,2,19050,77400,0.12
+Alt,Married Filing Jointly,3,77400,165000,0.22
+Alt,Married Filing Jointly,4,165000,315000,0.24
+Alt,Married Filing Jointly,5,315000,400000,0.32
+Alt,Married Filing Jointly,6,400000,600000,0.35
+Alt,Married Filing Jointly,7,600000,10000000000000,0.37
+Alt,Head of Household,1,0,13600,0.1
+Alt,Head of Household,2,13600,38700,0.12
+Alt,Head of Household,3,38700,82500,0.22
+Alt,Head of Household,4,82500,157500,0.24
+Alt,Head of Household,5,157500,200000,0.32
+Alt,Head of Household,6,200000,500000,0.35
+Alt,Head of Household,7,500000,10000000000000,0.37
+Alt,Married Filing Separately,1,0,9525,0.1
+Alt,Married Filing Separately,2,9525,38700,0.12
+Alt,Married Filing Separately,3,38700,82500,0.22
+Alt,Married Filing Separately,4,82500,157500,0.24
+Alt,Married Filing Separately,5,157500,200000,0.32
+Alt,Married Filing Separately,6,200000,300000,0.35
+Alt,Married Filing Separately,7,300000,10000000000000,0.37
