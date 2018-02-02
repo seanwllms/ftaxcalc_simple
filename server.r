@@ -388,6 +388,8 @@ federal and state taxes, the application makes a few assumptions:</p>
 This means that it does not account for changes to \"above the line\" 
 deductions under the TCJA. For example, it does 
 not account for the elimination of the federal moving expense deduction.</li>
+<li>The calculator assumes all filers are under age 65, and therefore
+inelgible for the additional standard deduction for filers ages 65 and older.</li>
 <li>The calculator does not account for all changes to federal itemized 
 deductions. Provisions not accounted for include: 
 <ul><li>The decrease in the AGI threshhold for the medical 
@@ -404,8 +406,8 @@ either the standard deduction or itemizing. In the case of non-conformity,
 filers with itemized deductions that are greater than the Minnesota 
 standard deduction but less than the federal standard deduction may 
 benefit from itemizing their deductions. The calculator assumes 
-that the filer would claim the standard deduction, because 
-it is greater.</li>
+that the filer would claim the federal standard deduction, even if that would 
+increase their Minnesota tax liability.</li>
 <li>When calculating state income tax add-back under conformity, filers with
 more than $10,000 in combined property and income taxes are assumed to 
 deduct their property taxes first. This matches the Department of Revenue's 
