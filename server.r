@@ -308,8 +308,8 @@ function(input, output) {
          oldtax = tax_post_cc_base,
          newtax = tax_post_cc_alt,
          mntax = mntax_output,
-         oldmntx = mn_tax_alt,
-         newmntx = mn_tax_base)
+         oldmntx = mn_tax_base,
+         newmntx = mn_tax_alt)
   })
 
   
