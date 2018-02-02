@@ -377,13 +377,13 @@ function(input, output) {
 <p>This calculator only models the effects of the Tax Cuts and 
 Jobs Act (TCJA) on individual tax liability; <b>it does not account
 for changes to federal law regarding pass-through entities and 
-corporations.</b> The description of state conformity
-assumes that Minnesota would simply update its statutory references
-to the Internal Revenue Code to reflect the changes resulting from 
-the passage of the federal law and make no other changes </p>
-<p>In order to accurately model the effects of the federal 
-tax cuts and jobs act on individual federal and state taxes, the 
-application makes a few assumptions:</p>
+corporations.</b></p>
+<p>Estimates of state conformity assume
+that Minnesota would update its statutory references
+to the Internal Revenue Code to reflect the TCJA and make no 
+other changes </p>
+<p>In order to accurately model the effects of the TJCA on individual 
+federal and state taxes, the application makes a few assumptions:</p>
 <ol><li>The calculator starts with federal adjusted gross income. 
 This means that it does not account for changes to \"above the line\" 
 deductions under the TCJA. For example, it does 
