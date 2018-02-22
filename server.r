@@ -504,7 +504,7 @@ law would have been <b>${oldfedtax}.</b> \\
 Under the Tax Cuts and Jobs Act \\
 the tax will be <b>${newtax}.</b>
 These numbers are the taxpayer's tax before 
-all credits other than the federal child
+credits other than the federal child
 credit.
                   ",
                   oldfedtax = oldtax,
@@ -545,7 +545,7 @@ for changes to federal law regarding pass-through entities and
 corporations.</b></p>
 <p>Estimates of Minnesota liability under conformity assume
 Minnesota conforms to the TCJA by updating
-its statutory references to the Internal Revenue Code to reflect the TCJA,
+its statutory references to the Internal Revenue Code,
 while making no other policy changes in response to the new law. </p>
 <p>In order to accurately model the effects of the TJCA on individual 
 federal and state taxes, the application makes a few assumptions:</p>
