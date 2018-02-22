@@ -1,6 +1,114 @@
 
-function(input, output) {
+function(input, output, session) {
   
+  observeEvent(input$example1, {
+    updateSelectInput(session, "status", selected="Married Filing Jointly")
+    updateNumericInput(session, "agi", value = 40000)
+    updateNumericInput(session, "intpd", value = 0)
+    updateNumericInput(session, "state", value = 0)
+    updateNumericInput(session, "realest", value = 0)
+    updateNumericInput(session, "pptax", value = 0)
+    updateNumericInput(session, "othtax", value = 0)
+    updateNumericInput(session, "char", value = 0)
+    updateNumericInput(session, "dependents", value = 2)
+    updateNumericInput(session, "child", value = 2)
+  })
+  
+  observeEvent(input$example2, {
+    updateSelectInput(session, "status", selected="Married Filing Jointly")
+    updateNumericInput(session, "agi", value = 75000)
+    updateNumericInput(session, "intpd", value = 0)
+    updateNumericInput(session, "state", value = 0)
+    updateNumericInput(session, "realest", value = 0)
+    updateNumericInput(session, "pptax", value = 0)
+    updateNumericInput(session, "othtax", value = 0)
+    updateNumericInput(session, "char", value = 0)
+    updateNumericInput(session, "dependents", value = 2)
+    updateNumericInput(session, "child", value = 2)
+  })
+  
+  observeEvent(input$example3, {
+    updateSelectInput(session, "status", selected="Married Filing Jointly")
+    updateNumericInput(session, "agi", value = 150000)
+    updateNumericInput(session, "intpd", value = 7783)
+    updateNumericInput(session, "state", value = 8249)
+    updateNumericInput(session, "realest", value = 4162)
+    updateNumericInput(session, "pptax", value = 374)
+    updateNumericInput(session, "othtax", value = 41)
+    updateNumericInput(session, "char", value = 3315)
+    updateNumericInput(session, "dependents", value = 2)
+    updateNumericInput(session, "child", value = 2)
+  })
+  
+  
+  observeEvent(input$example4, {
+    updateSelectInput(session, "status", selected="Married Filing Jointly")
+    updateNumericInput(session, "agi", value = 500000)
+    updateNumericInput(session, "intpd", value = 12334)
+    updateNumericInput(session, "state", value = 39038)
+    updateNumericInput(session, "realest", value = 9102)
+    updateNumericInput(session, "pptax", value = 426)
+    updateNumericInput(session, "othtax", value = 240)
+    updateNumericInput(session, "char", value = 13655)
+    updateNumericInput(session, "dependents", value = 2)
+    updateNumericInput(session, "child", value = 2)
+  })
+  
+  
+  observeEvent(input$example5, {
+    updateSelectInput(session, "status", selected="Single")
+    updateNumericInput(session, "agi", value = 40000)
+    updateNumericInput(session, "intpd", value = 0)
+    updateNumericInput(session, "state", value = 0)
+    updateNumericInput(session, "realest", value = 0)
+    updateNumericInput(session, "pptax", value = 0)
+    updateNumericInput(session, "othtax", value = 0)
+    updateNumericInput(session, "char", value = 0)
+    updateNumericInput(session, "dependents", value = 1)
+    updateNumericInput(session, "child", value = 1)
+  })
+  
+  observeEvent(input$example6, {
+    updateSelectInput(session, "status", selected="Single")
+    updateNumericInput(session, "agi", value = 75000)
+    updateNumericInput(session, "intpd", value = 4459)
+    updateNumericInput(session, "state", value = 4338)
+    updateNumericInput(session, "realest", value = 2358)
+    updateNumericInput(session, "pptax", value = 145)
+    updateNumericInput(session, "othtax", value = 11)
+    updateNumericInput(session, "char", value = 1497)
+    updateNumericInput(session, "dependents", value = 1)
+    updateNumericInput(session, "child", value = 1)
+  })
+  
+  observeEvent(input$example7, {
+    updateSelectInput(session, "status", selected="Single")
+    updateNumericInput(session, "agi", value = 150000)
+    updateNumericInput(session, "intpd", value = 6582)
+    updateNumericInput(session, "state", value = 9009)
+    updateNumericInput(session, "realest", value = 3620)
+    updateNumericInput(session, "pptax", value = 232)
+    updateNumericInput(session, "othtax", value = 12)
+    updateNumericInput(session, "char", value = 2819)
+    updateNumericInput(session, "dependents", value = 1)
+    updateNumericInput(session, "child", value = 1)
+  })
+  
+  observeEvent(input$example8, {
+    updateSelectInput(session, "status", selected="Single")
+    updateNumericInput(session, "agi", value = 500000)
+    updateNumericInput(session, "intpd", value = 7373)
+    updateNumericInput(session, "state", value = 49057)
+    updateNumericInput(session, "realest", value = 7586)
+    updateNumericInput(session, "pptax", value = 157)
+    updateNumericInput(session, "othtax", value = 147)
+    updateNumericInput(session, "char", value = 17393)
+    updateNumericInput(session, "dependents", value = 1)
+    updateNumericInput(session, "child", value = 1)
+  })
+  
+  
+
   calctax <- reactive({
     ###############################################
     ########## Calculate Federal Taxes  ###########
