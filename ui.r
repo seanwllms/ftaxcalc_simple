@@ -2,7 +2,7 @@
 # Define UI for application
 fluidPage(
   
-  headerPanel('TCJA Tax Calculator'),
+  headerPanel('House Research Federal Tax Law Calculator'),
 
   mainPanel(
     tabsetPanel(
@@ -18,12 +18,19 @@ fluidPage(
                  column(3,actionButton("example3", "Example 3: $150,000 Income")),
                  column(3,actionButton("example4", "Example 4: $500,000 Income"))
                ),
-               h4("Single Taxpayer; 1 Child"),
+               h4("Head of Househhold Taxpayer; 1 Child"),
                fluidRow(
                  column(3,actionButton("example5", "Example 5: $40,000 Income")),
                  column(3,actionButton("example6", "Example 6: $75,000 Income")),
                  column(3,actionButton("example7", "Example 7: $150,000 Income")),
                  column(3,actionButton("example8", "Example 8: $500,000 Income"))
+               ),
+               h4("Single Taxpayer; No Children"),
+               fluidRow(
+                 column(3,actionButton("example9", "Example 9: $40,000 Income")),
+                 column(3,actionButton("example10", "Example 10: $75,000 Income")),
+                 column(3,actionButton("example11", "Example 11: $150,000 Income")),
+                 column(3,actionButton("example12", "Example 12: $500,000 Income"))
                )
                ),
       tabPanel("Minnesota Taxes", 
