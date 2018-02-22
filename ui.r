@@ -9,7 +9,6 @@ fluidPage(
       tabPanel("Federal Taxes", 
                tableOutput("taxtable"),
                htmlOutput("summary"),
-               br(),
                h3("Example Families"),
                h4("Married Taxpayers Filing Jointly; 2 Children"),
                fluidRow(
