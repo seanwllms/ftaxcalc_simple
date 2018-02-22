@@ -32,6 +32,8 @@ fluidPage(
                  column(3,actionButton("example12", "Example 12: $500,000 Income"))
                )
                ),
+               p("Examples assign a filer the standard deduction if more than half of filers in the same income
+                 range claim the standard deduction. "), 
       tabPanel("Minnesota Taxes", 
                tableOutput("mntax"),
                htmlOutput("mnsummary")),
