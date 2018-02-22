@@ -1,6 +1,165 @@
 
-function(input, output) {
+function(input, output, session) {
   
+  observeEvent(input$example1, {
+    updateSelectInput(session, "status", selected="Married Filing Jointly")
+    updateNumericInput(session, "agi", value = 40000)
+    updateNumericInput(session, "intpd", value = 0)
+    updateNumericInput(session, "state", value = 0)
+    updateNumericInput(session, "realest", value = 0)
+    updateNumericInput(session, "pptax", value = 0)
+    updateNumericInput(session, "othtax", value = 0)
+    updateNumericInput(session, "char", value = 0)
+    updateNumericInput(session, "dependents", value = 2)
+    updateNumericInput(session, "child", value = 2)
+  })
+  
+  observeEvent(input$example2, {
+    updateSelectInput(session, "status", selected="Married Filing Jointly")
+    updateNumericInput(session, "agi", value = 75000)
+    updateNumericInput(session, "intpd", value = 0)
+    updateNumericInput(session, "state", value = 0)
+    updateNumericInput(session, "realest", value = 0)
+    updateNumericInput(session, "pptax", value = 0)
+    updateNumericInput(session, "othtax", value = 0)
+    updateNumericInput(session, "char", value = 0)
+    updateNumericInput(session, "dependents", value = 2)
+    updateNumericInput(session, "child", value = 2)
+  })
+  
+  observeEvent(input$example3, {
+    updateSelectInput(session, "status", selected="Married Filing Jointly")
+    updateNumericInput(session, "agi", value = 150000)
+    updateNumericInput(session, "intpd", value = 7783)
+    updateNumericInput(session, "state", value = 8249)
+    updateNumericInput(session, "realest", value = 4162)
+    updateNumericInput(session, "pptax", value = 374)
+    updateNumericInput(session, "othtax", value = 41)
+    updateNumericInput(session, "char", value = 3315)
+    updateNumericInput(session, "dependents", value = 2)
+    updateNumericInput(session, "child", value = 2)
+  })
+  
+  
+  observeEvent(input$example4, {
+    updateSelectInput(session, "status", selected="Married Filing Jointly")
+    updateNumericInput(session, "agi", value = 500000)
+    updateNumericInput(session, "intpd", value = 12334)
+    updateNumericInput(session, "state", value = 39038)
+    updateNumericInput(session, "realest", value = 9102)
+    updateNumericInput(session, "pptax", value = 426)
+    updateNumericInput(session, "othtax", value = 240)
+    updateNumericInput(session, "char", value = 13655)
+    updateNumericInput(session, "dependents", value = 2)
+    updateNumericInput(session, "child", value = 2)
+  })
+  
+  
+  observeEvent(input$example5, {
+    updateSelectInput(session, "status", selected="Head of Household")
+    updateNumericInput(session, "agi", value = 40000)
+    updateNumericInput(session, "intpd", value = 0)
+    updateNumericInput(session, "state", value = 0)
+    updateNumericInput(session, "realest", value = 0)
+    updateNumericInput(session, "pptax", value = 0)
+    updateNumericInput(session, "othtax", value = 0)
+    updateNumericInput(session, "char", value = 0)
+    updateNumericInput(session, "dependents", value = 1)
+    updateNumericInput(session, "child", value = 1)
+  })
+  
+  observeEvent(input$example6, {
+    updateSelectInput(session, "status", selected="Head of Household")
+    updateNumericInput(session, "agi", value = 75000)
+    updateNumericInput(session, "intpd", value = 6917)
+    updateNumericInput(session, "state", value = 3704)
+    updateNumericInput(session, "realest", value = 2249)
+    updateNumericInput(session, "pptax", value = 127)
+    updateNumericInput(session, "othtax", value = 21)
+    updateNumericInput(session, "char", value = 901)
+    updateNumericInput(session, "dependents", value = 1)
+    updateNumericInput(session, "child", value = 1)
+  })
+  
+  observeEvent(input$example7, {
+    updateSelectInput(session, "status", selected="Head of Household")
+    updateNumericInput(session, "agi", value = 150000)
+    updateNumericInput(session, "intpd", value = 8917)
+    updateNumericInput(session, "state", value = 9407)
+    updateNumericInput(session, "realest", value = 4061)
+    updateNumericInput(session, "pptax", value = 211)
+    updateNumericInput(session, "othtax", value = 77)
+    updateNumericInput(session, "char", value = 2366)
+    updateNumericInput(session, "dependents", value = 1)
+    updateNumericInput(session, "child", value = 1)
+  })
+  
+  observeEvent(input$example8, {
+    updateSelectInput(session, "status", selected="Head of Household")
+    updateNumericInput(session, "agi", value = 500000)
+    updateNumericInput(session, "intpd", value = 11311)
+    updateNumericInput(session, "state", value = 37198)
+    updateNumericInput(session, "realest", value = 7993)
+    updateNumericInput(session, "pptax", value = 211)
+    updateNumericInput(session, "othtax", value = 77)
+    updateNumericInput(session, "char", value = 6296)
+    updateNumericInput(session, "dependents", value = 1)
+    updateNumericInput(session, "child", value = 1)
+  })
+  
+  
+  observeEvent(input$example9, {
+    updateSelectInput(session, "status", selected="Single")
+    updateNumericInput(session, "agi", value = 40000)
+    updateNumericInput(session, "intpd", value = 0)
+    updateNumericInput(session, "state", value = 0)
+    updateNumericInput(session, "realest", value = 0)
+    updateNumericInput(session, "pptax", value = 0)
+    updateNumericInput(session, "othtax", value = 0)
+    updateNumericInput(session, "char", value = 0)
+    updateNumericInput(session, "dependents", value = 0)
+    updateNumericInput(session, "child", value = 0)
+  })
+  
+  observeEvent(input$example10, {
+    updateSelectInput(session, "status", selected="Single")
+    updateNumericInput(session, "agi", value = 75000)
+    updateNumericInput(session, "intpd", value = 4459)
+    updateNumericInput(session, "state", value = 4338)
+    updateNumericInput(session, "realest", value = 2358)
+    updateNumericInput(session, "pptax", value = 145)
+    updateNumericInput(session, "othtax", value = 11)
+    updateNumericInput(session, "char", value = 1497)
+    updateNumericInput(session, "dependents", value = 0)
+    updateNumericInput(session, "child", value = 0)
+  })
+  
+  observeEvent(input$example11, {
+    updateSelectInput(session, "status", selected="Single")
+    updateNumericInput(session, "agi", value = 150000)
+    updateNumericInput(session, "intpd", value = 6582)
+    updateNumericInput(session, "state", value = 9009)
+    updateNumericInput(session, "realest", value = 3620)
+    updateNumericInput(session, "pptax", value = 232)
+    updateNumericInput(session, "othtax", value = 12)
+    updateNumericInput(session, "char", value = 2819)
+    updateNumericInput(session, "dependents", value = 0)
+    updateNumericInput(session, "child", value = 0)
+  })
+  
+  observeEvent(input$example12, {
+    updateSelectInput(session, "status", selected="Single")
+    updateNumericInput(session, "agi", value = 500000)
+    updateNumericInput(session, "intpd", value = 7373)
+    updateNumericInput(session, "state", value = 49057)
+    updateNumericInput(session, "realest", value = 7586)
+    updateNumericInput(session, "pptax", value = 157)
+    updateNumericInput(session, "othtax", value = 147)
+    updateNumericInput(session, "char", value = 17393)
+    updateNumericInput(session, "dependents", value = 0)
+    updateNumericInput(session, "child", value = 0)
+  })
+
   calctax <- reactive({
     ###############################################
     ########## Calculate Federal Taxes  ###########
@@ -339,11 +498,14 @@ function(input, output) {
     newtax <- scales::comma(calctax()[[3]])
     
     text <- glue("
-                  After subtracting the child credit, \\
-                  the filer's 2018 federal tax under old \\
-                  law would have been <b>${oldfedtax}.</b> \\
-                  Under the Tax Cuts and Jobs Act \\
-                  that will be <b>${newtax}.</b>
+After subtracting the child credit, \\
+the taxpayer's 2018 federal tax under old \\
+law would have been <b>${oldfedtax}.</b> \\
+Under the Tax Cuts and Jobs Act \\
+the tax will be <b>${newtax}.</b>
+These numbers are the taxpayer's tax before 
+all credits other than the federal child
+credit.
                   ",
                   oldfedtax = oldtax,
                   newfedtax = newtax)
@@ -358,10 +520,13 @@ function(input, output) {
     newtax <- scales::comma(round(calctax()[[6]]),0)
     
     text <- glue("
-                  The filer's 2018 Minnesota tax under \\
+                  The filer's 2018 Minnesota tax before credits under \\
                   non-conformity would be <b>${oldmntax}.</b> \\
                   If Minnesota conforms and makes no other \\
-                  changes, the filer's tax will be <b>${newmntax}.</b>
+                  changes, the filer's tax before credits will be <b>${newmntax}.</b>
+                  This assumes Minnesota conforms to the TCJA by updating
+                  its statutory references to the Internal Revenue Code to reflect the TCJA
+                  and makes no other policy changes.
                   ",
                  oldmntax = oldtax,
                  newmntax = newtax)
@@ -378,10 +543,10 @@ function(input, output) {
 Jobs Act (TCJA) on individual tax liability; <b>it does not account
 for changes to federal law regarding pass-through entities and 
 corporations.</b></p>
-<p>Estimates of state conformity assume
-that Minnesota would update its statutory references
-to the Internal Revenue Code to reflect the TCJA and make no 
-other changes </p>
+<p>Estimates of Minnesota liability under conformity assume
+Minnesota conforms to the TCJA by updating
+its statutory references to the Internal Revenue Code to reflect the TCJA,
+while making no other policy changes in response to the new law. </p>
 <p>In order to accurately model the effects of the TJCA on individual 
 federal and state taxes, the application makes a few assumptions:</p>
 <ol><li>The calculator starts with federal adjusted gross income. 
@@ -394,7 +559,7 @@ inelgible for the additional standard deduction for filers ages 65 and older.</l
 deductions. Provisions not accounted for include: 
 <ul><li>The decrease in the AGI threshhold for the medical 
 expense deduction.</li>
-<li>The elimination of the deduction for home equity loans.</li>
+<li>The elimination of the deduction for home equity loan interest.</li>
 <li>The reduction on the debt principal limitaiton for the 
 mortgage interest deduction.</ul>
  </li>
@@ -408,12 +573,21 @@ standard deduction but less than the federal standard deduction may
 benefit from itemizing their deductions. The calculator assumes 
 that the filer would claim the federal standard deduction, even if that would 
 increase their Minnesota tax liability.</li>
+<li>The calculator does not account for taxpayers who become newly eligible for 
+the Minnesota Non-itemizer Charitable Contribution subtraction under conformity.
+Taxpayers who itemized under old law but claim the standard deduction under conformity
+may become newly eligible for the non-itemizer subtraction. This may reduce their
+Minnesota tax liability.</li>
 <li>When calculating state income tax add-back under conformity, filers with
 more than $10,000 in combined property and income taxes are assumed to 
-deduct their property taxes first. This matches the Department of Revenue's 
-assumption about how conformity would be administered.
+deduct their property taxes first. This is in accorance with the Department of Revenue's 
+assumption about how conformity would be administered.</li>
+<li>The calculation of the capital gains tax makes a simplifying assumption about capital
+gains taxation. It assigns the taxpayer a single capital gains rate based upon the highest federal 
+tax bracket the taxpayer falls into. This is inaccurate for filers whose capital gains income may 
+fall in two separate brackets; these filers may be subject to different capital gains rates.</li>  
 </ol>
-<p>
+<p align=right>Created by the <b>Minnesota House Research Department</b>, February 2018.</p>
                  ")
     text
   })
