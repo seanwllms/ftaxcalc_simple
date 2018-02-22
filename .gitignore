@@ -47,8 +47,7 @@ vignettes/*.pdf
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
-<<<<<<< HEAD
 .Rproj.user
-=======
-.Rproj.user
->>>>>>> 91f3fa044307b0566c18c654d93fa377f416537d
+.Rproj.user/
+rsconnect/
+rsconnect*.tar.gz
