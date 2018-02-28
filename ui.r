@@ -12,6 +12,7 @@ fluidPage(
                  htmlOutput("mnsummary")),
         tabPanel("Taxpayer Details",
                  value = "tpdetailstab",
+                 h4("Income, Dependents, and Deductions (Pre-TCJA)"),
                  tableOutput("tpdetails"),
                  p(glue(
                    "Itemized deductions estimated based on average amounts deducted by other taxpayers with 
@@ -51,7 +52,8 @@ the same filing status and similar incomes."))
                ),
                h4("Taxpayer Details"),
                htmlOutput("deductionspiel"),
-               actionButton("linktotp", "Click here for more Taxpayer Information")
+               br(),
+               actionButton("linktotp", "Click here for detailed taxpayer information.")
   )
 
 )

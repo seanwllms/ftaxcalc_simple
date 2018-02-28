@@ -513,17 +513,17 @@ function(input, output, session) {
     output$tpdetails <- renderTable({
       
       as_tibble(list(`Filing Status` = status(),
+             `Dependents` = dependents(),
+             `Children 16 and Younger` = child(),
              `AGI` = agi(),
              `Interest Paid (Mortgage)` = intpd(),
              `State Income/Sales Taxes` = state(),
              `Real Estate Taxes` = realest(),
              `Personal Property Taxes` = pptax(),
              `Other Taxes` = othtax(),
-             `Charitable Contributions` = char(),
-             `Dependents` = dependents(),
-             `Children` = child())) %>%
+             `Charitable Contributions` = char())) %>%
       map_df(scales::comma) %>%
-      gather(Item, `Value`, `Filing Status`:`Children`)
+      gather(Item, `Value`, `Filing Status`:`Charitable Contributions`)
     })
   
     # output$taxgraph <- renderPlot({
