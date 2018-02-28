@@ -1,19 +1,22 @@
 
 # Define UI for application
 fluidPage(
-  
-  headerPanel('House Research Federal Tax Law Calculator'),
   mainPanel(
-    tabsetPanel(
+    tabsetPanel(id="tabs",
       tabPanel("Federal Taxes",
              tableOutput("taxtable"),
-             htmlOutput("summary"),
-             br(),
-             htmlOutput("disclaimer")
+             htmlOutput("summary")
         ),
         tabPanel("Minnesota Taxes",
                  tableOutput("mntax"),
                  htmlOutput("mnsummary")),
+        tabPanel("Taxpayer Details",
+                 value = "tpdetailstab",
+                 tableOutput("tpdetails"),
+                 p(glue(
+                   "Itemized deductions estimated based on average amounts deducted by other taxpayers with 
+the same filing status and similar incomes."))
+                 ),
         tabPanel("Assumptions and Explanation",
                  htmlOutput("caveats"))
     )
@@ -48,12 +51,7 @@ fluidPage(
                ),
                h4("Taxpayer Details"),
                htmlOutput("deductionspiel"),
-               tableOutput("tpdetails"),
-               p(glue(
-"Itemized deductions estimated based on average amounts deducted by other txpayer with the same filing status with 
-similar incomes."
-                  )
-               )
+               actionButton("linktotp", "Click here for more Taxpayer Information")
   )
 
 )

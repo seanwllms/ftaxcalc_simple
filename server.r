@@ -16,7 +16,12 @@ function(input, output, session) {
   jobmisc <- reactiveVal(0)
   othermisc <- reactiveVal(0)
   pct_itemize <- reactiveVal(.168)
-    
+  
+  observeEvent(input$linktotp, {
+    updateTabsetPanel(session, "tabs","tpdetailstab"
+    )
+  })
+  
   observeEvent(input$example1, {
     status("Married Filing Jointly")
     agi(40000)
@@ -208,7 +213,7 @@ function(input, output, session) {
 
       deductions_claimed_base <- max(st_ded_base, tot_item_base-pease_base)
       
-      itemizer_base <- ifelse(deductions_claimed_base == st_ded_base, "Standard Deduction", "Itemizer")
+      itemizer_base <- ifelse(deductions_claimed_base == st_ded_base, "Standard Ded.", "Itemizer")
 
       personal_exemptions <- ifelse(status() == "Married Filing Jointly", 2, 1)*4150
 
@@ -251,13 +256,13 @@ function(input, output, session) {
         `Pease Limitation on Deductions` = pease_base,
         `Standard Deduction` = st_ded_base,
         `Deductions Claimed` = deductions_claimed_base,
-        `Itemizer/St. Deduction` = itemizer_base,
+        `Itemizer/Standard Deduction` = itemizer_base,
         `Exemptions` = exemptions_base,
         `Personal Exemption Phaseout` = exemptions_phaseout_base,
         `Exemptions Allowed` = exemptions_allowed,
         `Federal Taxable Income` = taxable_income_base,
-        `Capital Gains/Dividends Tax` = capgains_tax_base,
-        `Ordinary Income Tax` = round(tax_base,0),
+        #`Capital Gains/Dividends Tax` = capgains_tax_base,
+        `Income Tax` = round(tax_base,0),
         `Total Federal Tax` = round(capgains_tax_base + tax_base, 0),
         `Child Credit` = child_credit_base,
         `Tax After (Non-Refundable) Child Credit` = tax_post_cc_base
@@ -280,7 +285,7 @@ function(input, output, session) {
 
       deductions_claimed_alt <- max(st_ded_alt, tot_item_alt)
       
-      itemizer_alt <- ifelse(deductions_claimed_alt == st_ded_alt, "Standard Deduction", "Itemizer")
+      itemizer_alt <- ifelse(deductions_claimed_alt == st_ded_alt, "Standard Ded.", "Itemizer")
       
       
       exemptions_alt <- 0
@@ -315,13 +320,13 @@ function(input, output, session) {
         `Pease Limitation on Deductions` = 0,
         `Standard Deduction` = st_ded_alt,
         `Deductions Claimed` =deductions_claimed_alt,
-        `Itemizer/St. Deduction` = itemizer_alt,
+        `Itemizer/Standard Deduction` = itemizer_alt,
         `Exemptions` = exemptions_alt,
         `Personal Exemption Phaseout` = 0,
         `Exemptions Allowed` = exemptions_alt,
         `Federal Taxable Income` = taxable_income_alt,
-        `Capital Gains/Dividends Tax` = capgains_tax_alt,
-        `Ordinary Income Tax` = round(tax_alt,0),
+#        `Capital Gains/Dividends Tax` = capgains_tax_alt,
+        `Income Tax` = round(tax_alt,0),
         `Total Federal Tax` = round(capgains_tax_alt + tax_alt, 0),
         `Child Credit` = child_credit_alt,
         `Tax After (Non-Refundable) Child Credit` = tax_post_cc_alt
@@ -546,14 +551,14 @@ function(input, output, session) {
       newtax <- scales::comma(calctax()[[3]])
       
       text <- glue("
-  After subtracting the child credit, \\
-  the taxpayer's 2018 federal tax under old \\
-  law would have been <b>${oldfedtax}.</b> \\
-  Under the Tax Cuts and Jobs Act \\
-  the tax will be <b>${newtax}.</b>
-  These numbers are the taxpayer's tax before
-  credits other than the federal child
-  credit.
+After subtracting the child credit, \\
+the taxpayer's 2018 federal tax under old \\
+law would have been <b>${oldfedtax}.</b> \\
+Under the Tax Cuts and Jobs Act \\
+the tax will be <b>${newtax}.</b>
+These numbers do not account for federal credits
+other than the nonrefundable portion of the 
+child credit.
                     ",
                     oldfedtax = oldtax,
                     newfedtax = newtax)
@@ -630,10 +635,6 @@ function(input, output, session) {
   more than $10,000 in combined property and income taxes are assumed to
   deduct their property taxes first. This is in accorance with the Department of Revenue's
   assumption about how conformity would be administered.</li>
-  <li>The calculation of the capital gains tax makes a simplifying assumption about capital
-  gains taxation. It assigns the taxpayer a single capital gains rate based upon the highest federal
-  tax bracket the taxpayer falls into. This is inaccurate for filers whose capital gains income may
-  fall in two separate brackets; these filers may be subject to different capital gains rates.</li>
   </ol>
   <p align=right>Created by the <b>Minnesota House Research Department</b>, February 2018.</p>
                    ")
@@ -647,7 +648,7 @@ function(input, output, session) {
                           "Filer claims the standard deduction.",
                           "Filer itemizes.")
       text <-glue(
-"About <b>{pct}</b> of filers who file as {filingstatus} itemize their deductions. {assignment}."
+"About <b>{pct}</b> of {filingstatus} filers with similar incomes itemize their deductions. {assignment}"
       )
       text
     })
