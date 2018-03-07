@@ -29,7 +29,7 @@ the same filing status and similar incomes."))
                  column(6,actionButton("example2", "$75,000 Income"))
                ),
                fluidRow(
-                 column(6,actionButton("example3", "150,000 Income")),
+                 column(6,actionButton("example3", "$150,000 Income")),
                  column(6,actionButton("example4", "$500,000 Income"))
                ),
                h4("Head of Househhold Taxpayer; 1 Child"),

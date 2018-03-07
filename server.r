@@ -262,8 +262,8 @@ function(input, output, session) {
         `Exemptions Allowed` = exemptions_allowed,
         `Federal Taxable Income` = taxable_income_base,
         #`Capital Gains/Dividends Tax` = capgains_tax_base,
-        `Income Tax` = round(tax_base,0),
-        `Total Federal Tax` = round(capgains_tax_base + tax_base, 0),
+        `Tax` = round(tax_base,0),
+        #`Total Federal Tax` = round(capgains_tax_base + tax_base, 0),
         `Child Credit` = child_credit_base,
         `Tax After (Non-Refundable) Child Credit` = tax_post_cc_base
       )) %>%
@@ -326,8 +326,8 @@ function(input, output, session) {
         `Exemptions Allowed` = exemptions_alt,
         `Federal Taxable Income` = taxable_income_alt,
 #        `Capital Gains/Dividends Tax` = capgains_tax_alt,
-        `Income Tax` = round(tax_alt,0),
-        `Total Federal Tax` = round(capgains_tax_alt + tax_alt, 0),
+        `Tax` = round(tax_alt,0),
+        #`Total Federal Tax` = round(capgains_tax_alt + tax_alt, 0),
         `Child Credit` = child_credit_alt,
         `Tax After (Non-Refundable) Child Credit` = tax_post_cc_alt
       )) %>%
@@ -524,7 +524,9 @@ function(input, output, session) {
              `Charitable Contributions` = char())) %>%
       map_df(scales::comma) %>%
       gather(Item, `Value`, `Filing Status`:`Charitable Contributions`)
-    })
+    },
+    striped = TRUE,
+    spacing = 'xs')
   
     # output$taxgraph <- renderPlot({
     #   things_to_graph <- c("AGI",
@@ -654,8 +656,10 @@ child credit.
     })
     
     output$taxtable <- renderTable({
-      calctax()[[1]]
-    })
+      calctax()[[1]]},
+      striped = TRUE,
+      spacing = 'xs'
+    )
 
     output$mntax <- renderTable({
       calctax()[[4]]},
